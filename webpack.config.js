@@ -55,39 +55,39 @@ if (mode === 'development') {
 }
 
 module.exports = [
-    {
-        ...baseConfig,
-        output: {
-            path: path.resolve(__dirname, 'dist'),
-            filename: 'TronWeb.node.js',
-            libraryTarget: 'commonjs2',
-            libraryExport: 'default'
-        },
-        module: {
-            rules: [
-                {
-                    test: /\.js$/,
-                    exclude: /(node_modules|bower_components)/,
-                    use: {
-                        loader: 'babel-loader',
-                        options: {
-                            presets: [
-                                ['@babel/env', {
-                                    targets: {
-                                        node: 6
-                                    },
-                                    forceAllTransforms: true
-                                }]
-                            ],
-                            plugins: nodePlugins
-                        }
-                    }
-                }
-            ]
-        },
-        externals: [ externals() ],
-        target: 'node'
-    },
+    // {
+    //     ...baseConfig,
+    //     output: {
+    //         path: path.resolve(__dirname, 'dist'),
+    //         filename: 'TronWeb.node.js',
+    //         libraryTarget: 'commonjs2',
+    //         libraryExport: 'default'
+    //     },
+    //     module: {
+    //         rules: [
+    //             {
+    //                 test: /\.js$/,
+    //                 exclude: /(node_modules|bower_components)/,
+    //                 use: {
+    //                     loader: 'babel-loader',
+    //                     options: {
+    //                         presets: [
+    //                             ['@babel/env', {
+    //                                 targets: {
+    //                                     node: 6
+    //                                 },
+    //                                 forceAllTransforms: true
+    //                             }]
+    //                         ],
+    //                         plugins: nodePlugins
+    //                     }
+    //                 }
+    //             }
+    //         ]
+    //     },
+    //     externals: [ externals() ],
+    //     target: 'node'
+    // },
     {
         ...baseConfig,
         output: {

@@ -1,15 +1,15 @@
 import providers from 'lib/providers';
 import utils from 'utils';
-import BigNumber from 'bignumber.js';
+// import BigNumber from 'bignumber.js';
 import EventEmitter from 'eventemitter3';
 import {version} from '../package.json';
-import semver from 'semver';
+// import semver from 'semver';
 import injectpromise from 'injectpromise';
 
 import TransactionBuilder from 'lib/transactionBuilder';
 import Trx from 'lib/trx';
 import Contract from 'lib/contract';
-import Plugin from 'lib/plugin';
+// import Plugin from 'lib/plugin';
 import Event from 'lib/event';
 import {keccak256} from 'utils/ethersUtils';
 import {ADDRESS_PREFIX} from 'utils/address';
@@ -18,11 +18,11 @@ const DEFAULT_VERSION = '3.5.0';
 
 export default class TronWeb extends EventEmitter {
     static providers = providers;
-    static BigNumber = BigNumber;
+    // static BigNumber = BigNumber;
     static TransactionBuilder = TransactionBuilder;
     static Trx = Trx;
     static Contract = Contract;
-    static Plugin = Plugin;
+    // static Plugin = Plugin;
     static Event = Event;
     static version = version;
     static utils = utils;
@@ -54,7 +54,7 @@ export default class TronWeb extends EventEmitter {
         this.event = new Event(this);
         this.transactionBuilder = new TransactionBuilder(this);
         this.trx = new Trx(this);
-        this.plugin = new Plugin(this, options);
+        // this.plugin = new Plugin(this, options);
         this.utils = utils;
 
         this.setFullNode(fullNode);
@@ -62,7 +62,7 @@ export default class TronWeb extends EventEmitter {
         this.setEventServer(eventServer);
 
         this.providers = providers;
-        this.BigNumber = BigNumber;
+        // this.BigNumber = BigNumber;
 
         this.defaultBlock = false;
         this.defaultPrivateKey = false;
@@ -141,9 +141,9 @@ export default class TronWeb extends EventEmitter {
         this.emit('addressChanged', {hex, base58});
     }
 
-    fullnodeSatisfies(version) {
-        return semver.satisfies(this.fullnodeVersion, version);
-    }
+    // fullnodeSatisfies(version) {
+    //     return semver.satisfies(this.fullnodeVersion, version);
+    // }
 
     isValidProvider(provider) {
         return Object.values(providers).some(knownProvider => provider instanceof knownProvider);
@@ -247,7 +247,7 @@ export default class TronWeb extends EventEmitter {
             },
             fromPrivateKey(privateKey) {
                 try {
-                    return utils.crypto.pkToAddress(privateKey);
+                    return ''//utils.crypto.pkToAddress(privateKey);
                 } catch {
                     return false;
                 }
@@ -348,13 +348,14 @@ export default class TronWeb extends EventEmitter {
     }
 
     static toBigNumber(amount = 0) {
-        if (utils.isBigNumber(amount))
-            return amount;
+        // if (utils.isBigNumber(amount))
+        //     return amount;
 
-        if (utils.isString(amount) && /^(-|)0x/.test(amount))
-            return new BigNumber(amount.replace('0x', ''), 16);
+        // if (utils.isString(amount) && /^(-|)0x/.test(amount))
+        //     return new BigNumber(amount.replace('0x', ''), 16);
 
-        return new BigNumber(amount.toString(10), 10);
+        // return new BigNumber(amount.toString(10), 10);
+        return ''
     }
 
     static isAddress(address = false) {

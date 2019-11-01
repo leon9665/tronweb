@@ -3,7 +3,7 @@ import {base64EncodeToString} from './code';
 import {base64DecodeFromString, hexStr2byteArray} from './code';
 import {encode58, decode58} from './base58';
 import {byte2hexStr, byteArray2hexStr} from './bytes';
-import {ec as EC} from 'elliptic';
+// import {ec as EC} from 'elliptic';
 import {keccak256, sha256} from './ethersUtils';
 
 export function getBase58CheckAddress(addressBytes) {
@@ -85,17 +85,18 @@ export function getRowBytesFromTransactionBase64(base64Data) {
 }
 
 export function genPriKey() {
-    const ec = new EC('secp256k1');
-    const key = ec.genKeyPair();
-    const priKey = key.getPrivate();
+    // const ec = new EC('secp256k1');
+    // const key = ec.genKeyPair();
+    // const priKey = key.getPrivate();
 
-    let priKeyHex = priKey.toString('hex');
+    // let priKeyHex = priKey.toString('hex');
 
-    while (priKeyHex.length < 64) {
-        priKeyHex = `0${priKeyHex}`;
-    }
+    // while (priKeyHex.length < 64) {
+    //     priKeyHex = `0${priKeyHex}`;
+    // }
 
-    return hexStr2byteArray(priKeyHex);
+    // return hexStr2byteArray(priKeyHex);
+    return ''
 }
 
 export function computeAddress(pubBytes) {
@@ -191,54 +192,56 @@ export function getAddressFromPriKeyBase64String(priKeyBase64String) {
 }
 
 export function getPubKeyFromPriKey(priKeyBytes) {
-    const ec = new EC('secp256k1');
-    const key = ec.keyFromPrivate(priKeyBytes, 'bytes');
-    const pubkey = key.getPublic();
-    const x = pubkey.x;
-    const y = pubkey.y;
+    // const ec = new EC('secp256k1');
+    // const key = ec.keyFromPrivate(priKeyBytes, 'bytes');
+    // const pubkey = key.getPublic();
+    // const x = pubkey.x;
+    // const y = pubkey.y;
 
-    let xHex = x.toString('hex');
+    // let xHex = x.toString('hex');
 
-    while (xHex.length < 64) {
-        xHex = `0${xHex}`;
-    }
+    // while (xHex.length < 64) {
+    //     xHex = `0${xHex}`;
+    // }
 
-    let yHex = y.toString('hex');
+    // let yHex = y.toString('hex');
 
-    while (yHex.length < 64) {
-        yHex = `0${yHex}`;
-    }
+    // while (yHex.length < 64) {
+    //     yHex = `0${yHex}`;
+    // }
 
-    const pubkeyHex = `04${xHex}${yHex}`;
-    const pubkeyBytes = hexStr2byteArray(pubkeyHex);
+    // const pubkeyHex = `04${xHex}${yHex}`;
+    // const pubkeyBytes = hexStr2byteArray(pubkeyHex);
 
-    return pubkeyBytes;
+    // return pubkeyBytes;
+    return ''
 }
 
 export function ECKeySign(hashBytes, priKeyBytes) {
-    const ec = new EC('secp256k1');
-    const key = ec.keyFromPrivate(priKeyBytes, 'bytes');
-    const signature = key.sign(hashBytes);
-    const r = signature.r;
-    const s = signature.s;
-    const id = signature.recoveryParam;
+    // const ec = new EC('secp256k1');
+    // const key = ec.keyFromPrivate(priKeyBytes, 'bytes');
+    // const signature = key.sign(hashBytes);
+    // const r = signature.r;
+    // const s = signature.s;
+    // const id = signature.recoveryParam;
 
-    let rHex = r.toString('hex');
+    // let rHex = r.toString('hex');
 
-    while (rHex.length < 64) {
-        rHex = `0${rHex}`;
-    }
+    // while (rHex.length < 64) {
+    //     rHex = `0${rHex}`;
+    // }
 
-    let sHex = s.toString('hex');
+    // let sHex = s.toString('hex');
 
-    while (sHex.length < 64) {
-        sHex = `0${sHex}`;
-    }
+    // while (sHex.length < 64) {
+    //     sHex = `0${sHex}`;
+    // }
 
-    const idHex = byte2hexStr(id);
-    const signHex = rHex + sHex + idHex;
+    // const idHex = byte2hexStr(id);
+    // const signHex = rHex + sHex + idHex;
 
-    return signHex;
+    // return signHex;
+    return ''
 }
 
 export function SHA256(msgBytes) {
@@ -255,8 +258,9 @@ export function passwordToAddress(password) {
 }
 
 export function pkToAddress(privateKey) {
-    const com_priKeyBytes = hexStr2byteArray(privateKey);
-    const com_addressBytes = getAddressFromPriKey(com_priKeyBytes);
+    // const com_priKeyBytes = hexStr2byteArray(privateKey);
+    // const com_addressBytes = getAddressFromPriKey(com_priKeyBytes);
 
-    return getBase58CheckAddress(com_addressBytes);
+    // return getBase58CheckAddress(com_addressBytes);
+    return ''
 }
