@@ -39,7 +39,6 @@ export default class Trx {
     getCurrentBlock(callback = false) {
         if (!callback)
             return this.injectPromise(this.getCurrentBlock);
-
         this.tronWeb.fullNode.request('wallet/getnowblock').then(block => {
             callback(null, block);
         }).catch(err => callback(err));
@@ -699,7 +698,7 @@ export default class Trx {
                     this.tronWeb.address.fromPrivateKey(privateKey)
                 ).toLowerCase();
 
-                if (address !== transaction.raw_data.contract[0].parameter.value.owner_address.toLowerCase())
+                if (address !== this.tronWeb.address.toHex(transaction.raw_data.contract[0].parameter.value.owner_address))
                     return callback('Private key does not match address in transaction');
             }
             return callback(null,
@@ -1248,12 +1247,12 @@ export default class Trx {
         }
         if (utils.isFunction(limit)) {
             callback = limit;
-            limit = 30;
+            limit = 10;
         }
         if (!callback)
-            return this.injectPromise(this.listExchanges);
+            return this.injectPromise(this.listExchangesPaginated, limit, offset);
 
-        this.tronWeb.fullNode.request('wallet/listexchangespaginated', {
+        this.tronWeb.fullNode.request('wallet/getpaginatedexchangelist', {
             limit,
             offset
         }, 'post').then(({exchanges = []}) => {
@@ -1287,7 +1286,9 @@ export default class Trx {
         this.tronWeb.fullNode.request('wallet/getassetissuelistbyname', {
             value: this.tronWeb.fromUtf8(tokenID)
         }, 'post').then(token => {
-            if (!token.name)
+            if (Array.isArray(token.assetIssue)) {
+                callback(null, token.assetIssue.map(t => this._parseToken(t)));
+            } else if (!token.name)
                 return callback('Token does not exist');
 
             callback(null, this._parseToken(token));
