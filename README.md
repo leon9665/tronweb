@@ -26,7 +26,7 @@
 
 ## What is TronWeb?
 
-__[Tron Web - Developer Document](https://developers.tron.network/docs/tronweb-intro)__
+__[Tron Web - Developer Document](https://developers.tron.network/docs/tron-web-intro)__
 
 TronWeb aims to deliver a unified, seamless development experience influenced by Ethereum's [Web3](https://github.com/ethereum/web3.js/) implementation. We have taken the core ideas and expanded upon it to unlock the functionality of TRON's unique feature set along with offering new tools for integrating DApps in the browser, Node.js and IoT devices.
 
@@ -142,7 +142,7 @@ If you are using different servers for anything, you can do
 ```js
 const tronWeb = new TronWeb({
     fullNode: 'https://some-node.tld',
-    solidityNode: 'https://some-other-node.tld'
+    solidityNode: 'https://some-other-node.tld',
     eventServer: 'https://some-event-server.tld',
     privateKey: 'your private key'
   }
@@ -167,6 +167,37 @@ In order to contribute you can
 * push your changes and open a pull request
 
 ## Recent History
+
+__3.1.0__
+- Update `elliptic` to the latest version 6.5.3
+- Update `ethers` to the latest version 5.0.8
+- Fix `loadAbi()`
+
+__3.0.0__
+- Support sidechain for SunNetwork
+- Set feeLimit default value as 20 TRX
+
+__2.10.2__
+- Support toHex function with a space and empty character as parameter
+- The sign function supports visible as true.
+- Fix delete the private key in test files
+- Fix start method returned from watch is undefined #45
+
+__2.10.1__
+* Fix `trx.listExchangesPaginated`
+
+__2.10.0__
+* Fix `trx.getTokenListByName`
+
+__2.9.0__
+* Support smart contracts with function that requires an array of addresses as a parameter, included the constructor during the deployment
+
+__2.8.1__
+* Add options `keepTxID` to show also the txID when triggering a contract with `shouldPollResponse`
+
+__2.8.0__
+* Improve in the plugin architecture allows someone to implement a full lib at the same level of Trx and TransactionBuilder
+
 __2.7.4__
 * Fix bugs of trx.getBrokerage and trx.getReward function
 

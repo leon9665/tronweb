@@ -39,7 +39,6 @@ export default class Trx {
     getCurrentBlock(callback = false) {
         if (!callback)
             return this.injectPromise(this.getCurrentBlock);
-
         this.tronWeb.fullNode.request('wallet/getnowblock').then(block => {
             callback(null, block);
         }).catch(err => callback(err));
@@ -698,7 +697,7 @@ export default class Trx {
                     this.tronWeb.address.fromPrivateKey(privateKey)
                 ).toLowerCase();
 
-                if (address !== transaction.raw_data.contract[0].parameter.value.owner_address.toLowerCase())
+                if (address !== this.tronWeb.address.toHex(transaction.raw_data.contract[0].parameter.value.owner_address))
                     return callback('Private key does not match address in transaction');
             }
             return callback(null,
@@ -711,22 +710,25 @@ export default class Trx {
 
     static signString(message, privateKey, useTronHeader = true) {
         message = message.replace(/^0x/, '');
-        const signingKey = new SigningKey(privateKey);
+        const value ={
+            toHexString: function() {
+                return '0x' + privateKey
+            },
+            value: privateKey
+        }
+        const signingKey = new SigningKey(value);
         const messageBytes = [
             ...toUtf8Bytes(useTronHeader ? TRX_MESSAGE_HEADER : ETH_MESSAGE_HEADER),
             ...utils.code.hexStr2byteArray(message)
         ];
-
         const messageDigest = keccak256(messageBytes);
         const signature = signingKey.signDigest(messageDigest);
-
         const signatureHex = [
             '0x',
             signature.r.substring(2),
             signature.s.substring(2),
             Number(signature.v).toString(16)
         ].join('');
-
         return signatureHex
     }
 
@@ -1246,12 +1248,12 @@ export default class Trx {
         }
         if (utils.isFunction(limit)) {
             callback = limit;
-            limit = 30;
+            limit = 10;
         }
         if (!callback)
-            return this.injectPromise(this.listExchanges);
+            return this.injectPromise(this.listExchangesPaginated, limit, offset);
 
-        this.tronWeb.fullNode.request('wallet/listexchangespaginated', {
+        this.tronWeb.fullNode.request('wallet/getpaginatedexchangelist', {
             limit,
             offset
         }, 'post').then(({exchanges = []}) => {
@@ -1285,7 +1287,9 @@ export default class Trx {
         this.tronWeb.fullNode.request('wallet/getassetissuelistbyname', {
             value: this.tronWeb.fromUtf8(tokenID)
         }, 'post').then(token => {
-            if (!token.name)
+            if (Array.isArray(token.assetIssue)) {
+                callback(null, token.assetIssue.map(t => this._parseToken(t)));
+            } else if (!token.name)
                 return callback('Token does not exist');
 
             callback(null, this._parseToken(token));
