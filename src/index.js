@@ -1,6 +1,6 @@
 import providers from 'lib/providers';
 import utils from 'utils';
-// import BigNumber from 'bignumber.js';
+import BigNumber from 'bignumber.js';
 import EventEmitter from 'eventemitter3';
 import {version} from '../package.json';
 // import semver from 'semver';
@@ -21,7 +21,7 @@ const FEE_LIMIT = 20000000;
 
 export default class TronWeb extends EventEmitter {
     static providers = providers;
-    // static BigNumber = BigNumber;
+    static BigNumber = BigNumber;
     static TransactionBuilder = TransactionBuilder;
     static Trx = Trx;
     static Contract = Contract;
@@ -66,7 +66,7 @@ export default class TronWeb extends EventEmitter {
         this.setEventServer(eventServer);
 
         this.providers = providers;
-        // this.BigNumber = BigNumber;
+        this.BigNumber = BigNumber;
 
         this.defaultBlock = false;
         this.defaultPrivateKey = false;
@@ -358,14 +358,14 @@ export default class TronWeb extends EventEmitter {
     }
 
     static toBigNumber(amount = 0) {
-        // if (utils.isBigNumber(amount))
-        //     return amount;
+        if (utils.isBigNumber(amount))
+            return amount;
 
-        // if (utils.isString(amount) && /^(-|)0x/.test(amount))
-        //     return new BigNumber(amount.replace('0x', ''), 16);
+        if (utils.isString(amount) && /^(-|)0x/.test(amount))
+            return new BigNumber(amount.replace('0x', ''), 16);
 
-        // return new BigNumber(amount.toString(10), 10);
-        return ''
+        return new BigNumber(amount.toString(10), 10);
+        // return ''
     }
 
     static isAddress(address = false) {

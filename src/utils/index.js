@@ -7,7 +7,7 @@ import * as abi from './abi';
 import * as ethersUtils from './ethersUtils';
 
 // import validator from 'validator';
-// import BigNumber from 'bignumber.js';
+import BigNumber from 'bignumber.js';
 import isURL from 'validator/lib/isURL';
 import {ADDRESS_PREFIX} from 'utils/address';
 
@@ -42,8 +42,8 @@ const utils = {
     },
 
     isBigNumber(number) {
-        return false
-        // return number && (number instanceof BigNumber || (number.constructor && number.constructor.name === 'BigNumber'));
+        // return false
+        return number && (number instanceof BigNumber || (number.constructor && number.constructor.name === 'BigNumber'));
     },
 
     isString(string) {
