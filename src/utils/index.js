@@ -6,15 +6,16 @@ import * as code from './code';
 import * as abi from './abi';
 import * as ethersUtils from './ethersUtils';
 
-import validator from 'validator';
+// import validator from 'validator';
 import BigNumber from 'bignumber.js';
+import isURL from 'validator/lib/isURL';
 import {ADDRESS_PREFIX} from 'utils/address';
 
 const utils = {
     isValidURL(url) {
         if (typeof url !== 'string')
             return false;
-        return validator.isURL(url.toString(), {
+        return isURL(url.toString(), {
             protocols: ['http', 'https'],
             require_tld: false
         });
@@ -41,6 +42,7 @@ const utils = {
     },
 
     isBigNumber(number) {
+        // return false
         return number && (number instanceof BigNumber || (number.constructor && number.constructor.name === 'BigNumber'));
     },
 
