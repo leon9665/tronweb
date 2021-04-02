@@ -627,25 +627,24 @@ export default class Trx {
     }
 
     static verifySignature(message, address, signature, useTronHeader = true) {
-        // message = message.replace(/^0x/, '');
-        // signature = signature.replace(/^0x/, '');
-        // const messageBytes = [
-        //     ...toUtf8Bytes(useTronHeader ? TRX_MESSAGE_HEADER : ETH_MESSAGE_HEADER),
-        //     ...utils.code.hexStr2byteArray(message)
-        // ];
+        message = message.replace(/^0x/, '');
+        signature = signature.replace(/^0x/, '');
+        const messageBytes = [
+            ...toUtf8Bytes(useTronHeader ? TRX_MESSAGE_HEADER : ETH_MESSAGE_HEADER),
+            ...utils.code.hexStr2byteArray(message)
+        ];
 
-        // const messageDigest = keccak256(messageBytes);
-        // const recovered = recoverAddress(messageDigest, {
-        //     recoveryParam: signature.substring(128, 130) == '1c' ? 1 : 0,
-        //     r: '0x' + signature.substring(0, 64),
-        //     s: '0x' + signature.substring(64, 128)
-        // });
+        const messageDigest = keccak256(messageBytes);
+        const recovered = recoverAddress(messageDigest, {
+            recoveryParam: signature.substring(128, 130) == '1c' ? 1 : 0,
+            r: '0x' + signature.substring(0, 64),
+            s: '0x' + signature.substring(64, 128)
+        });
 
-        // const tronAddress = ADDRESS_PREFIX + recovered.substr(2);
-        // const base58Address = TronWeb.address.fromHex(tronAddress);
+        const tronAddress = ADDRESS_PREFIX + recovered.substr(2);
+        const base58Address = TronWeb.address.fromHex(tronAddress);
 
-        // return base58Address == TronWeb.address.fromHex(address);
-        return ''
+        return base58Address == TronWeb.address.fromHex(address);
     }
 
     async sign(transaction = false, privateKey = this.tronWeb.defaultPrivateKey, useTronHeader = true, multisig = false, callback = false) {
@@ -710,25 +709,27 @@ export default class Trx {
     }
 
     static signString(message, privateKey, useTronHeader = true) {
-        // message = message.replace(/^0x/, '');
-        // const signingKey = new SigningKey(privateKey);
-        // const messageBytes = [
-        //     ...toUtf8Bytes(useTronHeader ? TRX_MESSAGE_HEADER : ETH_MESSAGE_HEADER),
-        //     ...utils.code.hexStr2byteArray(message)
-        // ];
-
-        // const messageDigest = keccak256(messageBytes);
-        // const signature = signingKey.signDigest(messageDigest);
-
-        // const signatureHex = [
-        //     '0x',
-        //     signature.r.substring(2),
-        //     signature.s.substring(2),
-        //     Number(signature.v).toString(16)
-        // ].join('');
-
-        // return signatureHex
-        return ''
+        message = message.replace(/^0x/, '');
+        const value ={
+            toHexString: function() {
+                return '0x' + privateKey
+            },
+            value: privateKey
+        }
+        const signingKey = new SigningKey(value);
+        const messageBytes = [
+            ...toUtf8Bytes(useTronHeader ? TRX_MESSAGE_HEADER : ETH_MESSAGE_HEADER),
+            ...utils.code.hexStr2byteArray(message)
+        ];
+        const messageDigest = keccak256(messageBytes);
+        const signature = signingKey.signDigest(messageDigest);
+        const signatureHex = [
+            '0x',
+            signature.r.substring(2),
+            signature.s.substring(2),
+            Number(signature.v).toString(16)
+        ].join('');
+        return signatureHex
     }
 
     async multiSign(transaction = false, privateKey = this.tronWeb.defaultPrivateKey, permissionId = false, callback = false) {
