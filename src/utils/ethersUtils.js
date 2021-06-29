@@ -11,9 +11,11 @@
 import {keccak256} from 'ethers/utils/keccak256';
 import {sha256} from 'ethers/utils/sha2';
 import {AbiCoder} from 'ethers/utils/abi-coder';
-const recoverAddress = ''
+import {recoverAddress} from 'ethers/utils/secp256k1';
+import {toUtf8Bytes} from 'ethers/utils/utf8'
+// const recoverAddress = ''
 const SigningKey = ''
-const toUtf8Bytes = ''
+// const toUtf8Bytes = ''
 
 export {
     keccak256,
